@@ -43,6 +43,8 @@ public class UserController {
 
         if(user != null) {
             session.setAttribute("currentUser", user);
+            User test = (User) session.getAttribute("currentUser");
+            logger.info("current user: " + test.getEmail());
             status = HttpStatus.OK;
         } else {
             status = HttpStatus.FORBIDDEN;
