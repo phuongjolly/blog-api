@@ -8,6 +8,7 @@ import com.phuongjolly.blog.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -60,7 +61,8 @@ public class PostController {
                               HttpSession session) {
         User currentUser = userController.getCurrentUserLogin(session);
         if(currentUser != null){
-            comment.setUserId(currentUser.getId());
+            comment.setUser(currentUser);
+            comment.setDate(new Date());
             postService.addNewComment(comment, id);
             return comment;
         }

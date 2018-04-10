@@ -1,26 +1,23 @@
 package com.phuongjolly.blog.models;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
+
+    @ManyToOne
+    private User user;
     @Lob
     private String content;
 
     @ManyToOne
     private Post post;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+    private Date date;
 
     public Long getId() {
         return id;
@@ -44,5 +41,21 @@ public class Comment {
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
