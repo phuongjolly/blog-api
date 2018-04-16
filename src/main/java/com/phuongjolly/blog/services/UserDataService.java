@@ -3,10 +3,17 @@ package com.phuongjolly.blog.services;
 import com.phuongjolly.blog.models.Role;
 import com.phuongjolly.blog.models.User;
 //import com.phuongjolly.blog.models.UserPrincipal;
+import com.phuongjolly.blog.models.requests.LoginRequest;
 import com.phuongjolly.blog.repository.RoleRepository;
 import com.phuongjolly.blog.repository.UserRepository;
+import org.omg.CORBA.UnknownUserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -17,7 +24,8 @@ import java.util.Optional;
 
 
 @Service
-public class UserDataService implements UserService {
+@Component
+public class UserDataService implements UserService, AuthenticationProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(UserDataService.class);
 
@@ -55,9 +63,8 @@ public class UserDataService implements UserService {
     }
 
     @Override
-    public User login(User loginInfo) {
-        User user = userRepository.findByEmailAndPassword(loginInfo.getEmail(), loginInfo.getPassword());
-        return user;
+    public User login(LoginRequest request) {
+        return userRepository.findByEmailAndPassword(request.getEmail(), request.getPassword());
     }
 
     @Override
@@ -73,5 +80,20 @@ public class UserDataService implements UserService {
             logger.info("data get from session is null");
         }
         return null;
+    }
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        User user = (User) authentication.getPrincipal();
+
+        if(user == null){
+            logger.info("unknow user id" + user.getName());
+        }
+        return new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+    }
+
+    @Override
+    public boolean supports(Class<?> aClass) {
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(aClass);
     }
 }

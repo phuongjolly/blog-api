@@ -59,13 +59,13 @@ public class PostController {
     public Comment addNewComment(@PathVariable("id") Long id,
                               @RequestBody Comment comment,
                               HttpSession session) {
-        User currentUser = userController.getCurrentUserLogin(session);
+        /*User currentUser = userController.getCurrentUserLogin(session);
         if(currentUser != null){
             comment.setUser(currentUser);
             comment.setDate(new Date());
             postService.addNewComment(comment, id);
             return comment;
-        }
+        } */
         return null;
     }
 
