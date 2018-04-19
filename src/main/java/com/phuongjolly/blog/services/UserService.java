@@ -10,5 +10,4 @@ public interface UserService{
     User getUserByEmail(String email);
     boolean register(User newUser);
     User login(LoginRequest user);
-    User getCurrentUserLogin(HttpSession session);
 }

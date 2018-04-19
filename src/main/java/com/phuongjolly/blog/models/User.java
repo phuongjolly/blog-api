@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 @Entity
 public class User implements UserDetails{
 
-    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,7 +37,7 @@ public class User implements UserDetails{
     }
 
     public void setPassword(String password) {
-        this.password = PASSWORD_ENCODER.encode(password);
+        this.password = password;
     }
 
     public Long getId() {

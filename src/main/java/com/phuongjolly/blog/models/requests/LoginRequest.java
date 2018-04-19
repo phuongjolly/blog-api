@@ -1,5 +1,10 @@
 package com.phuongjolly.blog.models.requests;
 
+import com.phuongjolly.blog.models.User;
+import com.phuongjolly.blog.services.UserDataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class LoginRequest {
 
     private String email;
@@ -15,7 +20,7 @@ public class LoginRequest {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {

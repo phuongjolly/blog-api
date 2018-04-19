@@ -51,8 +51,14 @@ public class UserController {
         HttpStatus status;
 
         if(user != null) {
-            Authentication auth = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+            Authentication auth = new UsernamePasswordAuthenticationToken(
+                    user.getEmail(),
+                    user.getPassword(),
+                    user.getAuthorities()
+            );
+
             SecurityContextHolder.getContext().setAuthentication(auth);
+            //User user1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             status = HttpStatus.OK;
         } else {
             status = HttpStatus.FORBIDDEN;
