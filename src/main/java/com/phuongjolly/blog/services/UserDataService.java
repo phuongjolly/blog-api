@@ -47,8 +47,8 @@ public class UserDataService implements UserService {
             roles.add(roleRepository.findByName(Role.USER));
             newUser.setRoles(roles);
 
-            //String encodePassword = passwordEncoder.encode(newUser.getPassword());
-            //newUser.setPassword(encodePassword);
+            String encodePassword = passwordEncoder.encode(newUser.getPassword());
+            newUser.setPassword(encodePassword);
 
             userRepository.save(newUser);
             return true;
@@ -58,9 +58,13 @@ public class UserDataService implements UserService {
 
     @Override
     public User login(LoginRequest request) {
-
-        //String encodePassword = passwordEncoder.encode(request.getPassword());
-        User user = userRepository.findByEmailAndPassword(request.getEmail(), request.getPassword());
-        return user;
+        User user = userRepository.findByEmail(request.getEmail());
+        if(user != null) {
+            String password = user.getPassword();
+            if(passwordEncoder.matches(request.getPassword(), password)) {
+                return user;
+            }
+        }
+        return null;
     }
 }
