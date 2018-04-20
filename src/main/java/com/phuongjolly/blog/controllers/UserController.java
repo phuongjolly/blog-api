@@ -1,5 +1,6 @@
 package com.phuongjolly.blog.controllers;
 
+import com.phuongjolly.blog.models.Role;
 import com.phuongjolly.blog.models.User;
 import com.phuongjolly.blog.models.requests.LoginRequest;
 import com.phuongjolly.blog.models.requests.RegisterRequest;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -104,4 +106,24 @@ public class UserController {
         logger.info("avatar before save: " + user.getAvatarUrl());
         return userRepository.save(user);
     }
+
+    @PostMapping("/setAdmin")
+    public User setAdmin(User requestInfo) {
+        User user = userRepository.findByEmail(requestInfo.getEmail());
+        if(user != null){
+            Role role = new Role();
+            role.setName(Role.ADMININISTRATOR);
+
+            List<Role> roles = user.getRoles();
+            roles.add(role);
+        }
+        return user;
+    }
+
+    @GetMapping("/isAdmin")
+    public boolean isAdmin(Principal principal) {
+        User user = userRepository.findByEmail(principal.getName());
+        return user.isAdmin();
+    }
+
 }

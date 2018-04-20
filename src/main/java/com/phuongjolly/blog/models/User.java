@@ -71,8 +71,9 @@ public class User implements UserDetails{
         return roles.stream().map(Role::getName).collect(Collectors.toList());
     }
 
-    private boolean isAdmin() {
-        return getRolesName().indexOf("ADMIN") >= 0;
+    public boolean isAdmin() {
+        boolean isAdmin = getRolesName().indexOf("ADMIN") >= 0;
+        return isAdmin;
     }
 
     public String getAvatarUrl() {
