@@ -3,6 +3,7 @@ package com.phuongjolly.blog.services;
 import com.phuongjolly.blog.models.Role;
 import com.phuongjolly.blog.models.User;
 import com.phuongjolly.blog.models.requests.LoginRequest;
+import com.phuongjolly.blog.models.requests.RegisterRequest;
 import com.phuongjolly.blog.repository.RoleRepository;
 import com.phuongjolly.blog.repository.UserRepository;
 import org.slf4j.Logger;
@@ -40,20 +41,21 @@ public class UserDataService implements UserService {
 
     @Override
     @Transactional
-    public boolean register(User newUser) {
-        User user = userRepository.findByEmail(newUser.getEmail());
+    public User register(RegisterRequest registerInfo) {
+        User user = userRepository.findByEmail(registerInfo.getEmail());
         if(user == null) {
+            user = new User();
+            user.setName(registerInfo.getName());
+            user.setEmail(registerInfo.getEmail());
+            user.setPassword(passwordEncoder.encode(registerInfo.getPassword()));
+
             List<Role> roles = new ArrayList<>();
             roles.add(roleRepository.findByName(Role.USER));
-            newUser.setRoles(roles);
+            user.setRoles(roles);
 
-            String encodePassword = passwordEncoder.encode(newUser.getPassword());
-            newUser.setPassword(encodePassword);
-
-            userRepository.save(newUser);
-            return true;
+            userRepository.save(user);
         }
-        return false;
+        return user;
     }
 
     @Override

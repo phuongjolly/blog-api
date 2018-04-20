@@ -2,6 +2,7 @@ package com.phuongjolly.blog.controllers;
 
 import com.phuongjolly.blog.models.User;
 import com.phuongjolly.blog.models.requests.LoginRequest;
+import com.phuongjolly.blog.models.requests.RegisterRequest;
 import com.phuongjolly.blog.repository.UserRepository;
 import com.phuongjolly.blog.services.UserService;
 import org.slf4j.Logger;
@@ -69,12 +70,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User registerInfo) {
-        boolean isOk = userService.register(registerInfo);
-        if(isOk){
-            return registerInfo;
-        }
-        return null;
+    public User register(@RequestBody RegisterRequest registerInfo) {
+        return userService.register(registerInfo);
     }
 
     @GetMapping("/currentUser")
