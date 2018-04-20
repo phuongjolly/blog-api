@@ -8,6 +8,7 @@ import com.phuongjolly.blog.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -57,8 +58,7 @@ public class PostController {
 
     @PostMapping("/{id}/addNewComment")
     public Comment addNewComment(@PathVariable("id") Long id,
-                              @RequestBody Comment comment,
-                              HttpSession session) {
+                                 @RequestBody Comment comment, Principal principal) {
         /*User currentUser = userController.getCurrentUserLogin(session);
         if(currentUser != null){
             comment.setUser(currentUser);
@@ -66,6 +66,13 @@ public class PostController {
             postService.addNewComment(comment, id);
             return comment;
         } */
+        User currentUser = userController.getCurrentUserLogin(principal);
+        if(currentUser != null){
+            comment.setUser(currentUser);
+            comment.setDate(new Date());
+            postService.addNewComment(comment, id);
+            return comment;
+        }
         return null;
     }
 
