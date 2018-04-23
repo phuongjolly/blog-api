@@ -53,6 +53,7 @@ public class UserDataService implements UserService {
             roles.add(roleRepository.findByName(Role.USER));
             user.setRoles(roles);
 
+
             userRepository.save(user);
         }
         return user;

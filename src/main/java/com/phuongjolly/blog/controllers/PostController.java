@@ -59,13 +59,6 @@ public class PostController {
     @PostMapping("/{id}/addNewComment")
     public Comment addNewComment(@PathVariable("id") Long id,
                                  @RequestBody Comment comment, Principal principal) {
-        /*User currentUser = userController.getCurrentUserLogin(session);
-        if(currentUser != null){
-            comment.setUser(currentUser);
-            comment.setDate(new Date());
-            postService.addNewComment(comment, id);
-            return comment;
-        } */
         User currentUser = userController.getCurrentUserLogin(principal);
         if(currentUser != null){
             comment.setUser(currentUser);

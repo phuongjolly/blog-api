@@ -19,13 +19,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        /*if(auth == null){
-            String email = httpServletRequest.getHeader("X-Auth-Username");
-            String password = httpServletRequest.getHeader("X-Auth-Password");
-            Authentication newAuth = new UsernamePasswordAuthenticationToken(email, password);
-            SecurityContextHolder.getContext().setAuthentication(newAuth);
-        }*/
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
