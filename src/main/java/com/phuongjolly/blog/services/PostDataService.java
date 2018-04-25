@@ -24,7 +24,7 @@ public class PostDataService implements PostService {
     public Post addNewPost(Post post) {
         post.setLikeCount(0);
         post.setCommentCount(0);
-
+        post.setDisplay(true);
         postRepository.save(post);
 
         return post;

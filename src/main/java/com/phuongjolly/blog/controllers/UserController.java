@@ -76,7 +76,8 @@ public class UserController {
         return userService.register(registerInfo);
     }
 
-    @GetMapping("/currentUser")
+    @RequestMapping(value = "/currentUser", method = RequestMethod.GET, produces={"application/json"})
+    @ResponseBody
     public User getCurrentUserLogin(Principal principal) {
         if (principal != null) {
             return userService.getUserByEmail(principal.getName());
