@@ -5,16 +5,9 @@ import com.phuongjolly.blog.models.Post;
 import com.phuongjolly.blog.models.Tag;
 import com.phuongjolly.blog.models.User;
 import com.phuongjolly.blog.services.PostService;
-import com.phuongjolly.blog.services.UserService;
-import com.sun.tools.javac.tree.JCTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Date;
 import java.util.Iterator;
