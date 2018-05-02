@@ -1,10 +1,12 @@
 package com.phuongjolly.blog.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,13 +24,9 @@ public class User implements UserDetails{
     @JsonIgnore
     private String password;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")}
-    )
-    private List<Role> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Role> roles = new ArrayList<>();
 
     @Lob
     private String avatarUrl;

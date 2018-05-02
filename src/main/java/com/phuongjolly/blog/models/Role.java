@@ -1,5 +1,7 @@
 package com.phuongjolly.blog.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -21,7 +23,8 @@ public class Role implements GrantedAuthority {
     //I don't know why it makes the bug
     //Failed to start bean 'documentationPluginsBootstrapper'
     /*@ManyToMany(mappedBy = "roles")
-    private List<User> users = new ArrayList<>();*/
+    @JsonIgnoreProperties("users")
+    private List<User> users;*/
 
     public Long getId() {
         return id;

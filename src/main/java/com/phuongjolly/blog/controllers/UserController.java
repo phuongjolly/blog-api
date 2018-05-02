@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -109,16 +107,8 @@ public class UserController {
     }
 
     @PostMapping("/setAdmin")
-    public User setAdmin(User requestInfo) {
-        User user = userRepository.findByEmail(requestInfo.getEmail());
-        if(user != null){
-            Role role = new Role();
-            role.setName(Role.ADMININISTRATOR);
-
-            List<Role> roles = user.getRoles();
-            roles.add(role);
-        }
-        return user;
+    public User setAdmin(@RequestBody User requestInfo) {
+        return userService.setAdmin(requestInfo);
     }
 
     @GetMapping("/isAdmin")
@@ -127,4 +117,8 @@ public class UserController {
         return user.isAdmin();
     }
 
+    @PostMapping("/addRole")
+    public Iterable<Role> addRole(@RequestBody Role role) {
+        return userService.addRole(role);
+    }
 }

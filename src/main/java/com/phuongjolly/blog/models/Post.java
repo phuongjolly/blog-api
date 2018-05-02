@@ -1,6 +1,12 @@
 package com.phuongjolly.blog.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Post {
@@ -17,6 +23,15 @@ public class Post {
 
     @Lob
     private String avatarUrl;
+    private boolean isDisplay;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable (
+            name = "posts_tags",
+            joinColumns = {@JoinColumn(name = "post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")}
+    )
+    private List<Tag> tags;
 
     public Integer getLikeCount() {
         return likeCount;
@@ -73,5 +88,21 @@ public class Post {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public boolean isDisplay() {
+        return isDisplay;
+    }
+
+    public void setDisplay(boolean display) {
+        isDisplay = display;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

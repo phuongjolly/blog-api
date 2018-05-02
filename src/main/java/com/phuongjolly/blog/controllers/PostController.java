@@ -2,11 +2,18 @@ package com.phuongjolly.blog.controllers;
 
 import com.phuongjolly.blog.models.Comment;
 import com.phuongjolly.blog.models.Post;
+import com.phuongjolly.blog.models.Tag;
 import com.phuongjolly.blog.models.User;
 import com.phuongjolly.blog.services.PostService;
 import com.phuongjolly.blog.services.UserService;
+import com.sun.tools.javac.tree.JCTree;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Date;
@@ -17,6 +24,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping(path = "/api/posts")
 public class PostController {
+    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     private PostService postService;
     private UserController userController;
@@ -74,4 +82,9 @@ public class PostController {
         return postService.getCommentsByPostId(id);
     }
 
+    @GetMapping("/{id}/tags")
+    public List<Tag> getTagsByPostId(@PathVariable("id") Long id) {
+        List<Tag> tags = postService.getTagsByPostId(id);
+        return tags;
+    }
 }

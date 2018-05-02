@@ -1,11 +1,13 @@
 package com.phuongjolly.blog.services;
 
+import com.google.common.collect.Lists;
 import com.phuongjolly.blog.models.Role;
 import com.phuongjolly.blog.models.User;
 import com.phuongjolly.blog.models.requests.LoginRequest;
 import com.phuongjolly.blog.models.requests.RegisterRequest;
 import com.phuongjolly.blog.repository.RoleRepository;
 import com.phuongjolly.blog.repository.UserRepository;
+import gherkin.lexer.Ro;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -67,6 +69,28 @@ public class UserDataService implements UserService {
             if(passwordEncoder.matches(request.getPassword(), password)) {
                 return user;
             }
+        }
+        return null;
+    }
+
+    @Override
+    public Iterable<Role> addRole(Role role) {
+        roleRepository.save(role);
+        return roleRepository.findAll();
+    }
+
+    @Override
+    public User setAdmin(User requestInfo) {
+        User user = userRepository.findByEmail(requestInfo.getEmail());
+        if(user != null) {
+            Role role = roleRepository.findByName(Role.ADMININISTRATOR);
+            List<Role> roles = user.getRoles();
+            if(roles.isEmpty()) {
+                roles = new ArrayList<>();
+            }
+            roles.add(role);
+            user.setRoles(roles);
+            return userRepository.save(user);
         }
         return null;
     }
