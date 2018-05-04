@@ -1,5 +1,6 @@
 package com.phuongjolly.blog.repository;
 
+import com.phuongjolly.blog.models.Post;
 import com.phuongjolly.blog.models.Tag;
 import org.springframework.data.repository.CrudRepository;
 

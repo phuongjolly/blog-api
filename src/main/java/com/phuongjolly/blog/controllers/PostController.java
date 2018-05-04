@@ -80,4 +80,9 @@ public class PostController {
         List<Tag> tags = postService.getTagsByPostId(id);
         return tags;
     }
+
+    @GetMapping("/tags/{name}")
+    public List<Post> getPostsByTagName(@PathVariable("name") String name) {
+        return postService.getPostsByTagName(name);
+    }
 }

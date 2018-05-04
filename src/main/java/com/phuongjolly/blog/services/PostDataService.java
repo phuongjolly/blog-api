@@ -67,4 +67,9 @@ public class PostDataService implements PostService {
     public List<Tag> getTagsByPostId(Long postId) {
         return tagRepository.findByPosts_Id(postId);
     }
+
+    @Override
+    public List<Post> getPostsByTagName(String name) {
+        return postRepository.findAllByTags_Name(name);
+    }
 }
