@@ -1,5 +1,6 @@
 package com.phuongjolly.blog.controllers;
 
+import com.phuongjolly.blog.models.ErrorResponse;
 import com.phuongjolly.blog.models.Role;
 import com.phuongjolly.blog.models.User;
 import com.phuongjolly.blog.models.requests.LoginRequest;
@@ -48,7 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginRequest request) {
+    public ResponseEntity login(@RequestBody LoginRequest request) {
         User user = userService.login(request);
         HttpStatus status;
 
@@ -62,16 +63,28 @@ public class UserController {
             SecurityContextHolder.getContext().setAuthentication(auth);
             //User user1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             status = HttpStatus.OK;
+            return new ResponseEntity<>(user, status);
         } else {
             status = HttpStatus.FORBIDDEN;
+            return new ResponseEntity<>(new ErrorResponse(403, "Login failed. Username or Password is incorrect"),
+                    status);
         }
-
-        return new ResponseEntity<>(user, status);
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody RegisterRequest registerInfo) {
-        return userService.register(registerInfo);
+    public ResponseEntity register(@RequestBody RegisterRequest registerInfo) {
+        User user;
+        user = userService.getUserByEmail(registerInfo.getEmail());
+        HttpStatus status;
+        if(user != null) {
+            status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(new ErrorResponse(400, "User exist already"), status);
+        } else {
+            user =  userService.register(registerInfo);
+            status = HttpStatus.OK;
+            return new ResponseEntity<>(user, status);
+        }
+
     }
 
     @RequestMapping(value = "/currentUser", method = RequestMethod.GET, produces={"application/json"})
@@ -114,7 +127,11 @@ public class UserController {
     @GetMapping("/isAdmin")
     public boolean isAdmin(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
-        return user.isAdmin();
+        boolean isAdmin = false;
+        if(user != null) {
+            isAdmin = user.isAdmin();
+        }
+        return isAdmin;
     }
 
     @PostMapping("/addRole")

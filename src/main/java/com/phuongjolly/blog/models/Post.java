@@ -23,6 +23,7 @@ public class Post {
 
     @Lob
     private String avatarUrl;
+    @Column(columnDefinition = "Bit default 0")
     private boolean isDisplay;
 
     @ManyToMany(cascade = CascadeType.ALL)

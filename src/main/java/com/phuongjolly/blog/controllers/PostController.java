@@ -1,12 +1,11 @@
 package com.phuongjolly.blog.controllers;
 
-import com.phuongjolly.blog.models.Comment;
-import com.phuongjolly.blog.models.Post;
-import com.phuongjolly.blog.models.Tag;
-import com.phuongjolly.blog.models.User;
+import com.phuongjolly.blog.models.*;
 import com.phuongjolly.blog.services.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Date;
@@ -58,16 +57,21 @@ public class PostController {
     }
 
     @PostMapping("/{id}/addNewComment")
-    public Comment addNewComment(@PathVariable("id") Long id,
-                                 @RequestBody Comment comment, Principal principal) {
+    public ResponseEntity addNewComment(@PathVariable("id") Long id,
+                                        @RequestBody Comment comment, Principal principal) {
         User currentUser = userController.getCurrentUserLogin(principal);
+        HttpStatus status;
         if(currentUser != null){
             comment.setUser(currentUser);
             comment.setDate(new Date());
             postService.addNewComment(comment, id);
-            return comment;
+            status = HttpStatus.OK;
+            return new ResponseEntity<>(comment, status);
+        } else
+        {
+            status = HttpStatus.BAD_REQUEST;
         }
-        return null;
+        return new ResponseEntity<>(new ErrorResponse(400, "Add comment failed"), status);
     }
 
     @GetMapping("/{id}/comments")

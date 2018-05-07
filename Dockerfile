@@ -3,6 +3,8 @@
 FROM maven:3.5.2-jdk-8 as build
 VOLUME /root/.m2
 WORKDIR /repo
+COPY pom.xml /repo
+RUN mvn install
 ADD . /repo
 RUN mvn clean package -DskipTests
 
