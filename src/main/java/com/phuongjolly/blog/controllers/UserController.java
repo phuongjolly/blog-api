@@ -81,8 +81,13 @@ public class UserController {
             return new ResponseEntity<>(new ErrorResponse(400, "User exist already"), status);
         } else {
             user =  userService.register(registerInfo);
-            status = HttpStatus.OK;
-            return new ResponseEntity<>(user, status);
+            if(user != null) {
+                status = HttpStatus.OK;
+                return new ResponseEntity<>(user, status);
+            } else {
+                status = HttpStatus.BAD_REQUEST;
+                return new ResponseEntity<>(new ErrorResponse(400, "User exist already"), status);
+            }
         }
 
     }

@@ -1,13 +1,10 @@
 package com.phuongjolly.blog.services;
-
-import com.google.common.collect.Lists;
 import com.phuongjolly.blog.models.Role;
 import com.phuongjolly.blog.models.User;
 import com.phuongjolly.blog.models.requests.LoginRequest;
 import com.phuongjolly.blog.models.requests.RegisterRequest;
 import com.phuongjolly.blog.repository.RoleRepository;
 import com.phuongjolly.blog.repository.UserRepository;
-import gherkin.lexer.Ro;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;

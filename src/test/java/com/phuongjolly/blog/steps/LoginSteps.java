@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -24,7 +26,7 @@ public class LoginSteps extends BaseStepDefinition {
     public void iSendLoginRequestWithCorrectInformation() throws Throwable {
         JSONObject loginInformation = new JSONObject()
                 .put("email", "correctuser@email.com")
-                .put("password", "correctpassword");
+                .put("password", "admin");
 
         perform(post("/api/users/login").content(loginInformation.toString()));
     }
@@ -43,7 +45,7 @@ public class LoginSteps extends BaseStepDefinition {
     public void iSendLoginRequestWithIncorrectInformation() throws Throwable {
         JSONObject loginInformation = new JSONObject()
                 .put("email", "incorrectuser@email.com")
-                .put("password", "correctpassword");
+                .put("password", "123456");
 
         perform(post("/api/users/login").content(loginInformation.toString()));
     }
@@ -55,7 +57,9 @@ public class LoginSteps extends BaseStepDefinition {
 
     @Given("^user data has been setup$")
     public void userDataHasBeenSetup() throws Throwable {
+
         ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(),
                 new ClassPathResource("data.sql"));
+
     }
 }

@@ -1,7 +1,11 @@
 TRUNCATE TABLE `user`;
-INSERT INTO `user` (`email`, `password`) values('correctuser@email.com', 'correctpassword');
+INSERT INTO `user` (`email`, `password`) value ('correctuser@email.com', '$2a$10$YpQiExJPx1Hqj8BhTetg/eQLEXwdaVz0tGOhzbA7VADHJsBOhFPXi');
 TRUNCATE TABLE `post`;
 INSERT INTO `post` (title, description, `content`) values('My Girl', 'My sweetest girl ever', 'I love you so much moa moa');
 TRUNCATE TABLE `comment`;
 INSERT INTO `comment` (user_id, post_id, content) values(1, 1, 'Oh your girl so cute :)');
 INSERT INTO `comment` (user_id, post_id, content) values(1, 1, 'Your family so cute babe, Wish you always like tha');
+TRUNCATE table `tag`;
+INSERT INTO `tag` (`name`) values('projects');
+TRUNCATE TABLE `posts_tags`;
+insert into `posts_tags` (post_id, tag_id) values(1, 1);

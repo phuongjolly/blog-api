@@ -43,16 +43,18 @@ public class PostDataService implements PostService {
     }
 
     @Override
-    public Optional<Post> getPostById(Long id) {
-        return postRepository.findById(id);
+    public Post getPostById(Long id) {
+        return postRepository.findById(id).get();
     }
 
     @Override
     public Comment addNewComment(Comment comment, Long postId) {
-        Post post = getPostById(postId).get();
+        Post post = getPostById(postId);
         if ( post != null) {
-            comment.setPost(post);
-            return commentRepository.save(comment);
+            if(!comment.getContent().isEmpty()) {
+                comment.setPost(post);
+                return commentRepository.save(comment);
+            }
         }
         return null;
     }
@@ -70,6 +72,16 @@ public class PostDataService implements PostService {
 
     @Override
     public List<Post> getPostsByTagName(String name) {
-        return postRepository.findAllByTags_Name(name);
+        List<Post> posts = postRepository.findAllByTags_Name(name);
+        return posts;
     }
+
+    @Override
+    public void deletePostById(Long id) {
+        Post post = getPostById(id);
+        if(post != null) {
+            postRepository.delete(post);
+        }
+    }
+
 }
