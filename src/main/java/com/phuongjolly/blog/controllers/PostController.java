@@ -4,12 +4,10 @@ import com.phuongjolly.blog.models.*;
 import com.phuongjolly.blog.services.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.expression.AccessException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.nio.file.AccessDeniedException;
 import java.security.Principal;
 import java.util.Date;
 import java.util.Iterator;
@@ -106,5 +104,19 @@ public class PostController {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(new ErrorResponse(400, "Delete failed"), status);
         }
+    }
+
+    @GetMapping("/page")
+    public List<Post> getPostsByPage(@RequestParam("page") int page, @RequestParam("size") int size) {
+        Page<Post> posts = postService.getPostsByPage(page, size);
+        if(posts != null) {
+            return posts.getContent();
+        }
+        return null;
+    }
+
+    @GetMapping("/totalItems")
+    public long getTotalItems() {
+        return postService.getPostCount();
     }
 }

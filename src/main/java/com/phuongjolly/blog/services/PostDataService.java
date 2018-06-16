@@ -8,9 +8,11 @@ import com.phuongjolly.blog.repository.PostRepository;
 import com.phuongjolly.blog.repository.TagRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostDataService implements PostService {
@@ -82,6 +84,20 @@ public class PostDataService implements PostService {
         if(post != null) {
             postRepository.delete(post);
         }
+    }
+
+    @Override
+    public Page<Post> getPostsByPage(int page, int size) {
+        long totalItems = getPostCount();
+        if(page * size < totalItems) {
+            return postRepository.findAll(PageRequest.of(page, size));
+        }
+        return null;
+    }
+
+    @Override
+    public long getPostCount() {
+        return postRepository.count();
     }
 
 }

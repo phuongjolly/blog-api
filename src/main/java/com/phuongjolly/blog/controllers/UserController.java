@@ -132,11 +132,10 @@ public class UserController {
     @GetMapping("/isAdmin")
     public boolean isAdmin(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
-        boolean isAdmin = false;
         if(user != null) {
-            isAdmin = user.isAdmin();
+            return user.isAdmin();
         }
-        return isAdmin;
+        return false;
     }
 
     @PostMapping("/addRole")
